@@ -105,6 +105,34 @@ public class MainFrame extends JFrame {
                 textFieldResult.setText("0");
             }
         });
+
+        hboxFormulaType.add(Box.createHorizontalGlue());
+        addRadioButton("mem1", 1);
+        addRadioButton("mem2", 2);
+        addRadioButton("mem3", 3);
+        radioButtons.setSelected(
+                radioButtons.getElements().nextElement().getModel(), true);
+
+        /*JButton buttonPlus = new JButton("M+");
+        buttonPlus.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent ev) {
+                try {
+                    Double x = Double.parseDouble(textFieldX.getText());
+                    Double y = Double.parseDouble(textFieldY.getText());
+                    Double result;
+                    if (formulaId == 1)
+                        result = calculate1(x, y);
+                    else
+                        result = calculate2(x, y);
+                    textFieldResult.setText(result.toString());
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(MainFrame.this,
+                            "Ошибка в формате записи числа с плавающей точкой", "Ошибочный формат числа",
+                            JOptionPane.WARNING_MESSAGE);
+                }
+            }
+        });
+        */
         Box hboxButtons = Box.createHorizontalBox();
         hboxButtons.add(Box.createHorizontalGlue());
         hboxButtons.add(buttonCalc);
