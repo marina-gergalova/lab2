@@ -23,6 +23,9 @@ public class MainFrame extends JFrame {
     // Текстовое поле для отображения результата,
 // как компонент, совместно используемый в различных методах
     private JTextField textFieldResult;
+    private JTextField mem1FieldResult;
+    private JTextField mem2FieldResult;
+    private JTextField mem3FieldResult;
     // Группа радио-кнопок для обеспечения уникальности выделения в группе
     private ButtonGroup radioButtons1 = new ButtonGroup();
     private ButtonGroup memoryRadioButtons = new ButtonGroup();
@@ -55,11 +58,11 @@ public class MainFrame extends JFrame {
 
         hboxMemType.add(Box.createHorizontalGlue());
         addMemoryRadioButton("mem1", 1);
-        addMemoryRadioButton("mem1", 2);
-        addMemoryRadioButton("mem1", 3);
+        addMemoryRadioButton("mem2", 2);
+        addMemoryRadioButton("mem3", 3);
         memoryRadioButtons.setSelected(memoryRadioButtons.getElements().nextElement().getModel(), true);
         hboxMemType.add(Box.createHorizontalGlue());
-        hboxMemType.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        //    hboxMemType.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
 
 // Создать область с полями ввода для X и Y
@@ -86,6 +89,7 @@ public class MainFrame extends JFrame {
 // Создать область для вывода результата
         JLabel labelForResult = new JLabel("Результат:");
 
+
 //labelResult = new JLabel("0");
         textFieldResult = new JTextField("0", 10);
         textFieldResult.setMaximumSize(
@@ -97,6 +101,22 @@ public class MainFrame extends JFrame {
         hboxResult.add(textFieldResult);
         hboxResult.add(Box.createHorizontalGlue());
         hboxResult.setBorder(BorderFactory.createLineBorder(Color.BLUE));
+
+        mem1FieldResult = new JTextField("0", 5);
+        mem1FieldResult.setMaximumSize(mem1FieldResult.getPreferredSize());
+        mem2FieldResult = new JTextField("0", 5);
+        mem2FieldResult.setMaximumSize(mem2FieldResult.getPreferredSize());
+        mem3FieldResult = new JTextField("0", 5);
+        mem3FieldResult.setMaximumSize(mem3FieldResult.getPreferredSize());
+        Box hboxMemResult = Box.createHorizontalBox();
+        hboxMemResult.add(Box.createHorizontalGlue());
+        hboxMemResult.add(mem1FieldResult);
+        hboxMemResult.add(Box.createHorizontalStrut(5));
+        hboxMemResult.add(mem2FieldResult);
+        hboxMemResult.add(Box.createHorizontalStrut(7));
+        hboxMemResult.add(mem3FieldResult);
+        hboxMemResult.add(Box.createHorizontalGlue());
+        // hboxMemResult.setBorder(BorderFactory.createLineBorder(Color.CYAN));
 // Создать область для кнопок
 
         JButton buttonCalc = new JButton("Вычислить");
@@ -119,6 +139,31 @@ public class MainFrame extends JFrame {
                 }
             }
         });
+
+        JButton buttonMPlus = new JButton("M+");
+        buttonMPlus.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent ev) {
+                try {
+                    Box.createHorizontalBox();
+                    Double result;
+                    if (memoryId == 1) {
+                        result = Double.parseDouble(mem1FieldResult.getText()) + Double.parseDouble(textFieldResult.getText());
+                        mem1FieldResult.setText(result.toString());
+                    } else if (memoryId == 2) {
+                        result = Double.parseDouble(mem2FieldResult.getText()) + Double.parseDouble(textFieldResult.getText());
+                        mem2FieldResult.setText(result.toString());
+                    } else {
+                        result = Double.parseDouble(mem3FieldResult.getText()) + Double.parseDouble(textFieldResult.getText());
+                        mem3FieldResult.setText(result.toString());
+                    }
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(MainFrame.this,
+                            "Ошибка в формате записи числа с плавающей точкой", "Ошибочный формат числа",
+                            JOptionPane.WARNING_MESSAGE);
+                }
+            }
+        });
+
         JButton buttonReset = new JButton("Очистить поля");
         buttonReset.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent ev) {
@@ -128,27 +173,19 @@ public class MainFrame extends JFrame {
             }
         });
 
-        JButton buttonPlus = new JButton("M+");
-        buttonPlus.addActionListener(new ActionListener() {
+        JButton buttonMClearReset = new JButton("МС");
+        buttonMClearReset.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent ev) {
-                try {
-                    Double x = Double.parseDouble(textFieldX.getText());
-                    Double y = Double.parseDouble(textFieldY.getText());
-                    Double result;
-                    if (formulaId == 1)
-                        result = calculate1(x, y);
-                    else
-                        result = calculate2(x, y);
-                    textFieldResult.setText(result.toString());
-                } catch (NumberFormatException ex) {
-                    JOptionPane.showMessageDialog(MainFrame.this,
-                            "Ошибка в формате записи числа с плавающей точкой", "Ошибочный формат числа",
-                            JOptionPane.WARNING_MESSAGE);
+                if (memoryId == 1) {
+                    mem1FieldResult.setText("0");
+                } else if (memoryId == 2) {
+                    mem2FieldResult.setText("0");
+                } else {
+                    mem3FieldResult.setText("0");
                 }
             }
         });
-
-
+///////////BUTTONS GROUP1
         Box hboxButtons = Box.createHorizontalBox();
         hboxButtons.add(Box.createHorizontalGlue());
         hboxButtons.add(buttonCalc);
@@ -157,15 +194,32 @@ public class MainFrame extends JFrame {
         hboxButtons.add(Box.createHorizontalGlue());
         hboxButtons.setBorder(
                 BorderFactory.createLineBorder(Color.GREEN));
+
+///////////BUTTONS GROUP2
+        Box hboxCalculateButtons = Box.createHorizontalBox();
+        hboxCalculateButtons.add(Box.createVerticalGlue());
+        hboxCalculateButtons.add(Box.createHorizontalGlue());
+        hboxCalculateButtons.add(buttonMPlus);
+        hboxCalculateButtons.add(Box.createHorizontalStrut(30));
+        hboxCalculateButtons.add(buttonMClearReset);
+        hboxCalculateButtons.add(Box.createHorizontalGlue());
+        hboxCalculateButtons.add(Box.createVerticalGlue());
+        hboxCalculateButtons.setBorder(BorderFactory.createLineBorder(Color.MAGENTA));
+
+
+        Box bigBoxForGleb = Box.createVerticalBox();
+        bigBoxForGleb.add(hboxMemType);
+        bigBoxForGleb.add(hboxMemResult);
+
 // Связать области воедино в компоновке BoxLayout
         Box contentBox = Box.createVerticalBox();
         contentBox.add(Box.createVerticalGlue());
         contentBox.add(hboxFormulaType);
-
         contentBox.add(hboxVariables);
         contentBox.add(hboxResult);
         contentBox.add(hboxButtons);
-        contentBox.add(hboxMemType);
+        contentBox.add(bigBoxForGleb);
+        contentBox.add(hboxCalculateButtons);
         contentBox.add(Box.createVerticalGlue());
         getContentPane().add(contentBox, BorderLayout.CENTER);
     }
@@ -200,11 +254,11 @@ public class MainFrame extends JFrame {
 
     }
 
-    private void addMemoryRadioButton(String buttonName, final int formulaId) {
+    private void addMemoryRadioButton(String buttonName, final int memoryId) {
         JRadioButton button = new JRadioButton(buttonName);
         button.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent ev) {
-                MainFrame.this.formulaId = memoryId;
+                MainFrame.this.memoryId = memoryId;
             }
         });
         memoryRadioButtons.add(button);
